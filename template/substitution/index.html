@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<!--
+  CasparCG Substitution Caption Template
+  ───────────────────────────────────────
+  Canvas: 1920 × 1080 px (Full HD), transparent background.
+  CasparCG composites this over the video feed.
+
+  CasparCG calls these global JS functions to control the graphic:
+    play(jsonString)  — show the caption with substitution data
+    stop()            — trigger the out-animation and hide the caption
+    update(jsonString)— update displayed data while caption is visible
+
+  The template ALSO connects to the backend GraphQL subscription via
+  Server-Sent Events (SSE) so it can receive data pushed from the server
+  without waiting for a direct CasparCG AMCP command.
+-->
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=1920" />
+  <title>Substitution Caption</title>
+
+  <!-- Roboto from Google Fonts — Material Design typeface -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700;900&display=swap"
+    rel="stylesheet"
+  />
+
+  <link rel="stylesheet" href="style.css" />
+  <!-- style.css lives alongside index.html — CasparCG serves them from the same template folder -->
+</head>
+<body>
+
+  <!--
+    #caption  — the whole lower-third card
+    Starts off-screen (translateX(-100%)), slides in when .visible is added,
+    slides back out when .hiding is added.
+  -->
+  <div id="caption">
+
+    <!-- Gradient accent bar across the top of the card -->
+    <div class="accent-bar"></div>
+
+    <!-- Header row: "SUBSTITUTION" label on the left, match time on the right -->
+    <div class="header">
+      <div class="header-title">
+        <!-- ⇄ swap icon -->
+        <svg class="swap-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <path d="M7 16V4m0 0L3 8m4-4l4 4"/>
+          <path d="M17 8v12m0 0l4-4m-4 4l-4-4"/>
+        </svg>
+        SUBSTITUTION
+      </div>
+      <div class="header-time">
+        <span id="sub-time">0'</span>
+      </div>
+    </div>
+
+    <!-- Player OUT row (red accent) -->
+    <div class="player-row" id="row-out">
+      <div class="direction out">
+        <!-- Down arrow = player leaving the field -->
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 4v12m0 0l-4-4m4 4l4-4" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="jersey-number out" id="out-number">00</div>
+      <div class="player-info">
+        <div class="role-label out-label">OUT</div>
+        <div class="player-name" id="out-name">PLAYER NAME</div>
+      </div>
+    </div>
+
+    <!-- Thin separator line between the two player rows -->
+    <div class="separator"></div>
+
+    <!-- Player IN row (green accent) -->
+    <div class="player-row" id="row-in">
+      <div class="direction in">
+        <!-- Up arrow = player entering the field -->
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 20V8m0 0l-4 4m4-4l4 4" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="jersey-number in" id="in-number">00</div>
+      <div class="player-info">
+        <div class="role-label in-label">IN</div>
+        <div class="player-name" id="in-name">PLAYER NAME</div>
+      </div>
+    </div>
+
+  </div><!-- /#caption -->
+
+  <script src="script.js"></script>
+</body>
+</html>

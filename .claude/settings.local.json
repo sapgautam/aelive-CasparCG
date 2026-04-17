@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node *)",
+      "Bash(curl -s -X POST http://localhost:4000/graphql -H 'Content-Type: application/json' -d '{\"query\":\"subscription { substitutionAdded { time } }\"}' -H 'Accept: text/event-stream' --max-time 3)",
+      "Bash(curl *)",
+      "Bash(netstat -ano)",
+      "Bash(findstr \":4000\")",
+      "Bash(findstr \"LISTENING\")",
+      "Bash(cmd *)",
+      "Bash(powershell *)"
+    ]
+  }
+}
